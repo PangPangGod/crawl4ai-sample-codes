@@ -2,6 +2,8 @@ from crawl4ai import Crawl4aiDockerClient
 from crawl4ai import CrawlerRunConfig
 from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
 
+## Warning: You have to use your own URL / extraction strategy. this is just an example.
+
 auth_email = "test@example.com"
 
 extraction_strategy = JsonCssExtractionStrategy(
@@ -91,7 +93,7 @@ if __name__ == "__main__":
     import asyncio
 
     host = "http://localhost:11235"
-    url = ""
+    url = "<YOUR_URL_HERE>"
 
     START = 1
     END = 2
