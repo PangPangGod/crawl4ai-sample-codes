@@ -9,3 +9,5 @@
     - Example Using `JsonCssExtractionStrategy` ..
 - `crawl4ai_multiturn_with_js.py`
     - Example Multiturn Crawl + Using javascript code inside crawling process
+- `crawl4ai_download_files.py`
+    - Mount Host Directory + Download files

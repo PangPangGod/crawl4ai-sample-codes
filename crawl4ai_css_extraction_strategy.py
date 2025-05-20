@@ -1,10 +1,7 @@
-from crawl4ai import Crawl4aiDockerClient
-from crawl4ai import CrawlerRunConfig
+from crawl4ai import Crawl4aiDockerClient, CrawlerRunConfig
 from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
 
 ## Warning: You have to use your own URL / extraction strategy. this is just an example.
-
-auth_email = "test@example.com"
 
 extraction_strategy = JsonCssExtractionStrategy(
     schema={
@@ -59,6 +56,7 @@ extraction_strategy = JsonCssExtractionStrategy(
 
 
 async def fetch_info_from_url(client: Crawl4aiDockerClient, url: str):
+    # load
     wait_for = "css:div.table_basics_com_cont_area table.table_basics_area tbody tr"
 
     crawler_config = CrawlerRunConfig(
@@ -82,6 +80,7 @@ async def main(host: str, url: str, start: int, end: int, verbose: bool = True):
         timeout=60,
     ) as client:
         # If jwt is enabled, authenticate first
+        auth_email = "test@example.com"
         await client.authenticate(auth_email)
 
         for page in range(start, end + 1):
@@ -95,6 +94,7 @@ if __name__ == "__main__":
     host = "http://localhost:11235"
     url = "<YOUR_URL_HERE>"
 
+    # IF multiple pages are needed
     START = 1
     END = 2
 
