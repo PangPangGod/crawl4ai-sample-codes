@@ -2,8 +2,60 @@ from crawl4ai import Crawl4aiDockerClient, CrawlerRunConfig, BrowserConfig
 from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
 from crawl4ai.models import CrawlResult
 
-from typing import Iterable
+from pydantic import BaseModel, ValidationError
+from typing import Iterable, Union, Iterable, Type, List, Dict, Any
+import json
 import os
+
+## 세부 Crawl할 때 파일이랑 같이 넣는거 Test
+
+
+def parse_json_to_pydantic(
+    cls: Type[BaseModel], json_data: Dict[str, Any]
+) -> BaseModel:
+    """
+    Helper Function: Parses a JSON dictionary into a Pydantic model instance.
+    """
+    try:
+        return cls(**json_data)
+    except ValidationError as e:
+        print(f"[Error] Validation error: {e}")
+        return None
+
+
+class ParsedInfo(BaseModel):
+    label: str
+    content: str
+
+
+def process_crawl_result(crawl_result: Union[CrawlResult, Iterable[CrawlResult]]):
+    if isinstance(crawl_result, CrawlResult):
+        json_content: List[Dict[str, Any]] = json.loads(crawl_result.extracted_content)
+        for content in json_content:
+            pydantic_model = parse_json_to_pydantic(ParsedInfo, content)
+            if pydantic_model:
+                print(f"[Success] Parsed Pydantic model: {pydantic_model}")
+            else:
+                print("[Error] Failed to parse JSON content.")
+        return
+
+    if any(not isinstance(r, CrawlResult) for r in crawl_result):
+        raise ValueError(
+            "There are elements in List[CrawlResult] that are not of type CrawlResult."
+        )
+
+    for index, r in enumerate(crawl_result):
+        json_content: List[Dict[str, Any]] = json.loads(r.extracted_content)
+
+        for content in json_content:
+            pydantic_model = parse_json_to_pydantic(ParsedInfo, content)
+            if pydantic_model:
+                print(
+                    f"[Success] Result {index}: Parsed Pydantic model: {pydantic_model}"
+                )
+            else:
+                print(f"[Error] Result {index}: Failed to parse JSON content.")
+    return
 
 
 async def main(host: str, downloads_path: str = None, urls: Iterable[str] = None):
@@ -62,18 +114,7 @@ async def main(host: str, downloads_path: str = None, urls: Iterable[str] = None
         )
 
         # check type with CrawlResult
-        if isinstance(result, CrawlResult):
-            print(f"Result 0: {result.extracted_content}")
-            return
-
-        if any(not isinstance(r, CrawlResult) for r in result):
-            raise ValueError(
-                "There are elements in List[CrawlResult] that are not of type CrawlResult."
-            )
-
-        for index, r in enumerate(result):
-            print(f"Result {index}: {r.extracted_content}")
-        return
+        process_crawl_result(result)
 
 
 if __name__ == "__main__":
