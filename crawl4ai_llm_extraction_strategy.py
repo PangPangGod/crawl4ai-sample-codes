@@ -14,7 +14,7 @@ class Product(BaseModel):
 async def main(urls: Iterable[str] = None, instruction: str = None):
     llm_strat = LLMExtractionStrategy(
         llm_config=LLMConfig(
-            provider="gemini/gemini-1.5-flash", api_token=os.getenv("GOOGLE_API_KEY")
+            provider="gemini/gemini-2.0-flash", api_token=os.getenv("GOOGLE_API_KEY")
         ),
         schema=Product.model_json_schema(),
         extraction_type="schema",
@@ -36,7 +36,7 @@ async def main(urls: Iterable[str] = None, instruction: str = None):
         timeout=600,
     ) as client:
         # If jwt is enabled, authenticate first
-        auth_email = "test@example.com"
+        auth_email = "docker@email.com"
         await client.authenticate(auth_email)
 
         response = await client.crawl(
