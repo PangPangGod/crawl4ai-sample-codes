@@ -14,3 +14,5 @@
 - `crawl4ai_llm_extraction_strategy.py`
     - LLM Strategy Example with Google Gemini-1.5-flash
     - LLMStrategy Basically follow LiteLLM Format.
+- `crawl4ai_multiple_jobs.py`
+    - Multiple jobs(css_extraction / download_files) integrated in single loop

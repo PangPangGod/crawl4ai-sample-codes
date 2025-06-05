@@ -3,7 +3,7 @@ from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
 from crawl4ai.models import CrawlResult
 
 from pydantic import BaseModel, ValidationError
-from typing import Iterable, Union, Iterable, Type, List, Dict, Any
+from typing import Iterable, Union, Type, List, Dict, Any
 import json
 import os
 
