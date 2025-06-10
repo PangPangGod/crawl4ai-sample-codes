@@ -123,8 +123,7 @@ if __name__ == "__main__":
     ## Assuming a Docker version Crawl4AI is used, the download folder within the container will be mounted to the local machine's folder.
 
     ## Warning: Using WSL in Windows
-    ## docker run -d -p 11235:11235 --name crawl4ai --shm-size=3g -v "$(pwd)/downloads":/app/downloads unclecode/crawl4ai:latest
-
+    ## docker run -d -p 11235:11235 --name crawl4ai --shm-size=1g -v "$(pwd)/downloads":/app/downloads unclecode/crawl4ai:latest
     import asyncio
 
     host = "http://localhost:11235"

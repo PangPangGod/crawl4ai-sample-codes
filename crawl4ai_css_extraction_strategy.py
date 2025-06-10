@@ -3,6 +3,7 @@ from crawl4ai.extraction_strategy import JsonCssExtractionStrategy
 from typing import Iterable
 import json
 import re
+import pandas as pd
 
 from dataclasses import dataclass
 
@@ -131,10 +132,15 @@ async def fetch_info_from_url(client: Crawl4aiDockerClient, url: str):
 
     # print(response.__dict__.keys())
     json_content: Iterable[dict] = json.loads(response.extracted_content)
-
-    for content in json_content:
-        parsed_content: LinkInfo = parse_json_content(content)
-        print(parsed_content)
+    rows = [content for content in json_content]
+    # for content in json_content:
+    #     parsed_content: LinkInfo = parse_json_content(content)
+    #     rows.append(parsed_content.__dict__)
+    if rows:
+        df = pd.DataFrame(rows)
+        print(df)
+    else:
+        print("No data extracted.")
 
 
 async def main(host: str, url: str, start: int, end: int, verbose: bool = True):
